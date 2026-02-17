@@ -1,0 +1,8 @@
+__pycache__/
+.venv/
+venv/
+*.pyc
+font_lib/
+fonts_ttf/
+fonts_used/
+build/

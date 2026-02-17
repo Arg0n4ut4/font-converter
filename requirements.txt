@@ -1,0 +1,3 @@
+fonttools>=4.55.0
+brotli>=1.1.0
+cx_Freeze>=7.0.0
