@@ -5,82 +5,108 @@ CLI to convert `.ttf` to `.woff2` using `pyftsubset` (fontTools) with Brotli com
 ## Libraries used
 
 - fonttools (pyftsubset)
-- brotli (WOFF2 compression)
-- cx_Freeze (optional, for building the executable)
 
-## Simple file map
+# Font Converter (TTF → WOFF2 subset)
 
-- `main.py`: CLI entrypoint and menu.
-- `functions/`: path handling, naming, conversion logic.
-- `build_exe.py`: build script with cx_Freeze.
-- `requirements.txt`: runtime/build dependencies.
+Simple CLI to convert `.ttf` fonts into compressed WOFF2 subsets (U+000-5FF). Detects Google Fonts-style filenames, organizes outputs by family in `font_lib/`, and moves processed TTF files to `fonts_used/`.
 
-## Preparing the source environment
+## Release (Windows executable)
 
-Follow these steps to prepare a local Python development environment for the source code:
+- A Windows build is available: https://github.com/Arg0n4ut4/font-converter/releases/tag/v1.0.0
+- Primary distribution in Releases: `font-converter.exe` and a ZIP containing the full `build/` output. If you use Windows, download the ZIP (recommended) or the single `exe` and run it.
 
-1. Create a virtual environment: `python -m venv .venv`
-2. Activate the virtual environment: `.venv\Scripts\activate`
-3. Install dependencies: `pip install -r requirements.txt`
+## Quick start — Windows (downloaded exe)
 
-The above ensures `fonttools` and `brotli` are available for `pyftsubset` and WOFF2 compression.
+1. Download `font-converter.exe` or the ZIP from the Release above and place it in a folder.
+2. Double-click `font-converter.exe` or run from PowerShell:
 
-## Using the program (source or executable)
+```powershell
+.
+\font-converter.exe
+```
 
-You can run the program either from source (`python main.py`) or using the built executable (`font-converter.exe`). Behavior is the same in both modes.
+3. On first run the program will create these folders beside the executable: `fonts_ttf`, `font_lib`, `fonts_used`.
 
-Run from source:
+## Quick start — Linux / macOS (run from source)
+
+The code runs on Linux and macOS when executed from source. The simplest cross-platform option is to run the Python source instead of installing a native binary.
+
+1. Install a recent Python (3.10+; use same major used to develop, e.g. 3.13 if available).
+2. Create and activate a virtual environment:
+
+Linux/macOS (bash/zsh):
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+macOS (fish):
+
+```fish
+python -m venv .venv
+source .venv/bin/activate.fish
+```
+
+3. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+4. Run the program:
 
 ```bash
 python main.py
 ```
 
-On first run the application ensures the following folders exist beside the script or the executable: `fonts_ttf`, `font_lib`, `fonts_used`.
+## Notes and troubleshooting (macOS / Linux)
 
-Main menu options (summary):
+- `fonttools` and `brotli` are cross-platform. `pip install` normally installs prebuilt wheels, but on older systems `brotli` may need compilation. If installation fails, install system build tools:
+  - Debian/Ubuntu: `sudo apt install build-essential python3-dev`
+  - Fedora: `sudo dnf install @development-tools python3-devel`
+  - macOS: install Xcode Command Line Tools: `xcode-select --install`
+- If running from source, ensure you use a supported Python version and the virtualenv is activated.
+- If creating native builds on Linux/macOS with `cx_Freeze`, run the same `python build_exe.py build` on the target OS; the produced binary is specific to that OS.
 
-- `[1]` Convert and rename: scans `.ttf` files in `fonts_ttf`, groups them by detected family using the pattern `Family[_suffix]-WeightItalic` (Google Fonts style), and builds a conversion plan. For each family the app will ask once whether to drop a common `_suffix` (only when all family files share the same suffix). You may choose numeric weights (e.g. `900`) or textual weights (e.g. `Black`). Output `.woff2` files are written into `font_lib/<Family>/` and original `.ttf` files are moved to `fonts_used`.
-- `[2]` Clear `fonts_used`: remove previously converted TTF files from `fonts_used`.
-- `[3]` Help: show usage, naming rules, and subsetting details.
-- `[0]` Exit.
+## Build (developer)
 
-Notes:
+To build a Windows executable:
 
-- If a family contains different suffixes (for example `Inter_24pt` and `Inter_28pt`), the suffixes are preserved to avoid filename collisions.
-- You can keep `font_lib` and `fonts_used` in this repository as your local font library, or copy the results to your project folders as desired.
+```powershell
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+python build_exe.py build
+```
 
-## Using the executable (Windows)
+To build on Linux/macOS, run the same commands but use the shell activation shown above; the produced binary will be native for the build OS.
 
-- After you build the executable (see next section), run `font-converter.exe`; behavior matches Python mode and folders are created beside the `.exe`.
+## What to include in a Release
 
-## Build the executable (cx_Freeze)
+- Recommended: a ZIP with the full `build/exe.*` folder (ensures all bundled libs are present).
+- Optional: a separate `font-converter.exe` file for convenience.
+- Recommended: a SHA256 checksum file next to the ZIP/EXE so users can verify integrity before extracting.
+- Never include proprietary fonts in the release.
 
-1. Activate venv and ensure dependencies are installed (`pip install -r requirements.txt`).
-2. Place `logo.ico` in the project root.
-3. Run: `python build_exe.py build`
-4. Use the binary at `build/exe.../font-converter.exe`.
+## License and legal
 
-## License
+This project is released under the MIT License. See `LICENSE` for details.
 
-- Project code: MIT License (free to use, modify, and redistribute for any purpose). The full license text is available in the `licenses/` folder.
+## Security & responsibility
 
-## Legal notice and best practices
+- This tool performs font conversions. Users are responsible for ensuring they have rights to modify or redistribute any fonts they process.
+- Executables are not code-signed; Windows may show SmartScreen warnings for unsigned binaries.
 
-- **User responsibility:** this tool automates font conversion and subsetting; users are solely responsible for ensuring they have permission to modify and redistribute any font files they process.
-- **Do not include proprietary fonts in the repository:** do not commit or publish third-party font files in this repository.
-- **Check font licenses:** before redistributing WOFF2 files generated by this tool, verify the font family's license (for example SIL OFL, Apache-2.0, or others) and comply with its terms.
-- **Tool, not a font distributor:** this project provides only the conversion software; do not distribute collections of proprietary fonts together with this tool.
+## Files and structure (quick)
 
-## Dependency licenses
+- `main.py` — CLI entrypoint and menu.
+- `functions/` — conversion logic, naming helpers and path utils.
+- `build_exe.py` — cx_Freeze build script.
+- `requirements.txt` — runtime/build dependencies.
 
-- fonttools: MIT License.
-- brotli: MIT License.
-- cx_Freeze: MIT License (the frozen bootstrap included in the build contains an MIT notice).
+## Links
 
-Copies of the dependency licenses are provided in the `licenses/` folder.
-
-Upstream project links:
-
+- Releases: https://github.com/Arg0n4ut4/font-converter/releases/tag/v1.0.0
 - fonttools: https://github.com/fonttools/fonttools
 - brotli: https://github.com/google/brotli
-- cx_Freeze: https://github.com/marcelotduarte/cx_Freeze
