@@ -13,8 +13,7 @@ Simple CLI to convert `.ttf` fonts into compressed WOFF2 subsets (U+000-5FF). De
 ## Release (Windows executable)
 
 - A Windows build is available: https://github.com/Arg0n4ut4/font-converter/releases/tag/v1.0.0
-- A Windows build is available: https://github.com/Arg0n4ut4/font-converter/releases/tag/v1.0.0
-- Primary distribution in Releases: a ZIP containing the full `build/` output (recommended) and `font-converter.exe`. You must download and extract the ZIP `font-converter-win-x64-v1.0.0.zip` — the standalone `font-converter.exe` by itself does not include required runtime files (DLLs) and may not run reliably.
+- Primary distribution in Releases: a ZIP containing the full `build/` output (recommended). You must download and extract the ZIP `font-converter-win-x64-v1.0.0.zip`.
 
 ## Quick start — Windows (downloaded build ZIP)
 
@@ -27,8 +26,6 @@ Simple CLI to convert `.ttf` fonts into compressed WOFF2 subsets (U+000-5FF). De
 ```
 
 3. On first run the program will create these folders beside the executable: `fonts_ttf`, `font_lib`, `fonts_used`.
-
-Note: if you downloaded only the single `font-converter.exe` file, it may fail to run because it lacks the bundled runtime files — always prefer the ZIP with the full build.
 
 ## Quick start — Linux / macOS (run from source)
 
@@ -88,8 +85,7 @@ To build on Linux/macOS, run the same commands but use the shell activation show
 ## What to include in a Release
 
 - Recommended: a ZIP with the full `build/exe.*` folder (ensures all bundled libs are present).
-- Optional: a separate `font-converter.exe` file for convenience, but do not rely on the standalone EXE alone — include the full ZIP with the build output so the executable has the required runtime files.
-- Recommended: a SHA256 checksum file next to the ZIP/EXE so users can verify integrity before extracting.
+- Recommended: a SHA256 checksum file next to the ZIP so users can verify integrity after download.
 - Never include proprietary fonts in the release.
 
 ## License and legal
