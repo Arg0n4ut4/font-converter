@@ -96,6 +96,6 @@ This project is released under the MIT License. See `LICENSE` for details.
 
 ## Links
 
-- Releases: https://github.com/Arg0n4ut4/font-converter/releases/tag/v1.0.0
+- Releases: https://github.com/Arg0n4ut4/font-converter/releases
 - fonttools: https://github.com/fonttools/fonttools
 - brotli: https://github.com/google/brotli
