@@ -6,10 +6,6 @@ CLI to convert `.ttf` to `.woff2` using `pyftsubset` (fontTools) with Brotli com
 
 - fonttools (pyftsubset)
 
-# Font Converter (TTF → WOFF2 subset)
-
-Simple CLI to convert `.ttf` fonts into compressed WOFF2 subsets (U+000-5FF). Detects Google Fonts-style filenames, organizes outputs by family in `font_lib/`, and moves processed TTF files to `fonts_used/`.
-
 ## Release (Windows executable)
 
 - A Windows build is available: https://github.com/Arg0n4ut4/font-converter/releases/tag/v1.0.0
@@ -81,12 +77,6 @@ python build_exe.py build
 ```
 
 To build on Linux/macOS, run the same commands but use the shell activation shown above; the produced binary will be native for the build OS.
-
-## What to include in a Release
-
-- Recommended: a ZIP with the full `build/exe.*` folder (ensures all bundled libs are present).
-- Recommended: a SHA256 checksum file next to the ZIP so users can verify integrity after download.
-- Never include proprietary fonts in the release.
 
 ## License and legal
 
